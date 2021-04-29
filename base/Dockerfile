@@ -145,6 +145,7 @@ COPY assets/lambda.zsh-theme /root/.oh-my-zsh/themes/
 COPY assets/.tmux.conf /root/.tmux.conf
 COPY assets/.vimrc /root/.vimrc
 COPY assets/.Xdefaults /root/.Xdefaults
+COPY assets/fix_eigen.sh /root/fix_eigen.sh
 
 # Entry script - This will also run rxvt-unicode
 COPY assets/entrypoint_setup.sh /

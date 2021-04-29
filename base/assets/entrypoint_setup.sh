@@ -68,6 +68,10 @@ setup_env_user () {
     ln -s /home/$USER/.oh-my-zsh/custom/pure/pure.zsh-theme /home/$USER/.oh-my-zsh/custom/
     ln -s /home/$USER/.oh-my-zsh/custom/pure/async.zsh /home/$USER/.oh-my-zsh/custom/
 
+    # fix eigen folder structure
+    ln -sf /usr/include/eigen3/Eigen /usr/include/Eigen
+    ln -sf /usr/include/eigen3/unsupported /usr/include/unsupported
+
     sed -i -e 's@ZSH=\"/root@ZSH=\"/home/$USER@g' /home/$USER/.zshrc
     # Copy SSH keys & fix owner
     if [ -d "/root/.ssh" ]; then
