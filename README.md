@@ -1,6 +1,8 @@
 # ROS Noetic Docker Intervals Edition
 
-Because of the many problems I have face while working with ROS, with the pain that it is to find solutions for them and inspired by [turlucode's repository](https://github.com/turlucode/ros-docker-gui) I ended up making this image with all the software that I use for my research and development. It includes, among other things, ROS Noetic as it is the core of this thing, the latest opencv build for image processing, ibex and codac for constraint programming and some customization for my own pleasure.
+Because of the many problems I have face while working with ROS, with the pain that it is to find solutions for them and inspired by [turlucode's repository](https://github.com/turlucode/ros-docker-gui) I ended up making this image with all the software that I use for my research and development.
+
+It includes, among other things, ROS Noetic as it is the core of this thing, the latest opencv build for image processing, ibex and codac for constraint programming and some customization for my own pleasure.
 
 You'll be able to find every extra customization in the *assets/* folder, including vim, tmux, zsh and xdefaults for urxvt terminal.
 
@@ -37,10 +39,10 @@ docker run --rm -it --privileged --net=host --ipc=host --env="DISPLAY" \
 }
   
 ros-connect(){
-docker exec -ti $(docker ps -aq --filter ancestor=turlucode/ros-noetic:cpu --filter status=running)     bash
+docker exec -ti $(docker ps -aq --filter ancestor=birromer/ros-noetic:cpu --filter status=running)     bash
 }
  
 ros-clean(){
-docker rm $(docker ps -aq --filter ancestor=turlucode/ros-noetic:cpu --filter status=exited)
+docker rm $(docker ps -aq --filter ancestor=birromer/ros-noetic:cpu --filter status=exited)
 }
 ````
