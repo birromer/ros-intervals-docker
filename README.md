@@ -11,7 +11,6 @@ Most of the details can be understood from the original repo, but I must point t
 In order to build it you need only to be inside the folder with the Dockerfile and run 
 ````
 docker build -t birromer/ros-noetic:cpu base
-
 ````
 
 For ease of use, edited a bit of the previously shown functions and added the following to my .zshrc file
