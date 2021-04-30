@@ -128,6 +128,7 @@ else
     DOCKER_USER_NAME="root"
 fi
 
+pip install xmlschema
 echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/"
 
 # Change shell to zsh
