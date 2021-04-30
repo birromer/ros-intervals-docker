@@ -30,6 +30,8 @@ software-properties-common \
 g++ \
 gcc \
 xsltproc \
+liblua5.3-0 \
+fuse \
 flex \
 bison \
 libeigen3-dev \
@@ -57,6 +59,9 @@ fonts-terminus \
 fonts-inconsolata \
 gdb valgrind && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install python package for coppeliasim
+RUN pip install xmlschema
 
 # Install cmake 3.17.3
 RUN git clone https://github.com/Kitware/CMake.git && \

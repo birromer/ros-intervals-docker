@@ -128,6 +128,8 @@ else
     DOCKER_USER_NAME="root"
 fi
 
+echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/"
+
 # Change shell to zsh
 chsh -s /usr/bin/zsh $DOCKER_USER_NAME
 
