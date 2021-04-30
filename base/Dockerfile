@@ -29,6 +29,7 @@ dbus-x11 \
 software-properties-common \
 g++ \
 gcc \
+xsltproc \
 flex \
 bison \
 libeigen3-dev \
