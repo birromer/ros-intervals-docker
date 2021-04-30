@@ -7,6 +7,7 @@ It includes, among other things:
   - ROS Noetic, as it is the core of this thing
   - OpenCV, the latest build for image processing
   - Ibex and Codac, for constraint programming
+  - A shared folder with the host computer
   - Tmux configuration and layout ready for development, for getting into action in less than 10 seconds
   - and some customization for my own pleasure
 
@@ -46,5 +47,9 @@ docker rm $(docker ps -aq --filter ancestor=birromer/ros-noetic:cpu --filter sta
 }
 ````
 
+In those lines I set the shared folder as *ros/*, which is where I have my catkin workspace, simulator stuff, etc. I also mount another folder inside it for my use, but I imagine you'll need to set it up differently.  
+
 After sourcing the your new shell configuration all you gotta do is run `ros-start` and a tmux session will start. 
-In case of doubt the command key has been remapped for C-a and the ? still works for help.
+In case of doubt the command key has been remapped to C-a and the ? still works for help.
+
+In this 
