@@ -51,3 +51,6 @@ In those lines I set the shared folder as *ros/*, which is where I have my catki
 
 After sourcing the your new shell configuration all you gotta do is run `ros-start` and a tmux session will start.
 In case of doubt the command key has been remapped to C-a and the ? still works for help.
+
+After running `ros-start`, it is possible to launch a series of terminals on
+tmux with `sudo tmuxp load ros/tmux_ros.yaml`
