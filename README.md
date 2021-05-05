@@ -35,21 +35,19 @@ docker run --rm -it --privileged --net=host --ipc=host --env="DISPLAY" \
     -e DOCKER_USER_GROUP_NAME=$(id -gn) \
     -e DOCKER_USER_GROUP_ID=$(id -g) \
     -e ROS_IP=127.0.0.1 \
-    birromer/ros-noetic:cpu 
+    birromer/ros-noetic:cpu
 }
-  
+
 ros-connect(){
 docker exec -ti $(docker ps -aq --filter ancestor=birromer/ros-noetic:cpu --filter status=running) bash
 }
- 
+
 ros-clean(){
 docker rm $(docker ps -aq --filter ancestor=birromer/ros-noetic:cpu --filter status=exited)
 }
 ````
 
-In those lines I set the shared folder as *ros/*, which is where I have my catkin workspace, simulator stuff, etc. I also mount another folder inside it for my use, but I imagine you'll need to set it up differently.  
+In those lines I set the shared folder as *ros/*, which is where I have my catkin workspace, simulator stuff, etc. I also mount another folder inside it for my use, but I imagine you'll need to set it up differently.
 
-After sourcing the your new shell configuration all you gotta do is run `ros-start` and a tmux session will start. 
+After sourcing the your new shell configuration all you gotta do is run `ros-start` and a tmux session will start.
 In case of doubt the command key has been remapped to C-a and the ? still works for help.
-
-In this 
