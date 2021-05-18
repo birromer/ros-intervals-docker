@@ -53,6 +53,9 @@ setup_env_user () {
      alias ta="t a -t"    # attach session
      alias tls="t ls"     # list sessions
      alias tn="t new -t"  # new sessiosn
+     alias la="ls -a"
+     alias ll="ls -l"
+     alias lal="ls -al"
      " >> /root/.zshrc
 
     ## Copy configs

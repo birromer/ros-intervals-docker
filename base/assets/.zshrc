@@ -14,7 +14,7 @@ export ZSH=$HOME/.oh-my-zsh
 #ZSH_THEME="lambda-gitster"
 #ZSH_THEME="lambda"
 #ZSH_THEME="spaceship"
-ZSH_THEME="cdimascio-lambda"
+ZSH_THEME="lambda"
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -135,14 +135,14 @@ zplug "plugins/tmux",   from:oh-my-zsh, if:"which tmux"
 
 # Supports oh-my-zsh plugins and the like
 if [[ $OSTYPE = (linux)* ]]; then
-	zplug "plugins/archlinux", from:oh-my-zsh, if:"which pacman"
-	zplug "plugins/dnf",       from:oh-my-zsh, if:"which dnf"
+  zplug "plugins/archlinux", from:oh-my-zsh, if:"which pacman"
+  zplug "plugins/dnf",       from:oh-my-zsh, if:"which dnf"
 fi
 
 if [[ $OSTYPE = (darwin)* ]]; then
-	zplug "plugins/osx",      from:oh-my-zsh
-	zplug "plugins/brew",     from:oh-my-zsh, if:"which brew"
-	zplug "plugins/macports", from:oh-my-zsh, if:"which port"
+  zplug "plugins/osx",      from:oh-my-zsh
+  zplug "plugins/brew",     from:oh-my-zsh, if:"which brew"
+  zplug "plugins/macports", from:oh-my-zsh, if:"which port"
 fi
 
 zplug "zsh-users/zsh-completions",              defer:0
@@ -200,26 +200,26 @@ setopt extended_glob
 
 # Directory coloring
 if [[ $OSTYPE = (darwin|freebsd)* ]]; then
-	export CLICOLOR="YES" # Equivalent to passing -G to ls.
-	export LSCOLORS="exgxdHdHcxaHaHhBhDeaec"
+  export CLICOLOR="YES" # Equivalent to passing -G to ls.
+  export LSCOLORS="exgxdHdHcxaHaHhBhDeaec"
 
-	[ -d "/opt/local/bin" ] && export PATH="/opt/local/bin:$PATH"
+  [ -d "/opt/local/bin" ] && export PATH="/opt/local/bin:$PATH"
 
-	# Prefer GNU version, since it respects dircolors.
-	if which gls &>/dev/null; then
-		alias ls='() { $(whence -p gls) -Ctr --file-type --color=auto $@ }'
-	else
-		alias ls='() { $(whence -p ls) -CFtr $@ }'
-	fi
-else
-	alias ls='() { $(whence -p ls) -Ctr --file-type --color=auto $@ }'
+  # Prefer GNU version, since it respects dircolors.
+  if which gls &>/dev/null; then
+    alias ls='() { $(whence -p gls) -Ctr --file-type --color=auto $@ }'
+  else
+    alias ls='() { $(whence -p ls) -CFtr $@ }'
+  fi
+  else
+    alias ls='() { $(whence -p ls) -Ctr --file-type --color=auto $@ }'
 fi
 
 # Set editor preference to nvim if available.
 if which nvim &>/dev/null; then
-	alias vim='() { $(whence -p nvim) $@ }'
+  alias vim='() { $(whence -p nvim) $@ }'
 else
-	alias vim='() { $(whence -p vim) $@ }'
+  alias vim='() { $(whence -p vim) $@ }'
 fi
 
 # Generic command adaptations.
@@ -292,25 +292,6 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 # =============================================================================
 #                                   Startup
 # =============================================================================
-
-## Load SSH and GPG agents via keychain.
-#setup_agents() {
-#  [[ $UID -eq 0 ]] && return
-#
-#  if which keychain &> /dev/null; then
-#	local -a ssh_keys gpg_keys
-#	for i in ~/.ssh/**/*pub; do test -f "$i(.N:r)" && ssh_keys+=("$i(.N:r)"); done
-#	gpg_keys=$(gpg -K --with-colons 2>/dev/null | awk -F : '$1 == "sec" { print $5 }')
-#    if (( $#ssh_keys > 0 )) || (( $#gpg_keys > 0 )); then
-#	  alias run_agents='() { $(whence -p keychain) --quiet --eval --inherit any-once --agents ssh,gpg $ssh_keys ${(f)gpg_keys} }'
-#	  [[ -t ${fd:-0} || -p /dev/stdin ]] && eval `run_agents`
-#	  unalias run_agents
-#    fi
-#  fi
-#}
-#setup_agents
-#unfunction setup_agents
-
 # Install plugins if there are plugins that have not been installed
 if ! zplug check; then
     printf "Install? [y/N]: "
@@ -324,7 +305,7 @@ zplug load
 
 if zplug check "seebi/dircolors-solarized"; then
   if which gdircolors &> /dev/null; then
-	alias dircolors='() { $(whence -p gdircolors) }'
+    alias dircolors='() { $(whence -p gdircolors) }'
   fi
   if which dircolors &> /dev/null; then
     scheme="dircolors.256dark"
@@ -334,11 +315,11 @@ fi
 
 # History
 if zplug check "zsh-users/zsh-history-substring-search"; then
-	zmodload zsh/terminfo
-	bindkey "$terminfo[kcuu1]" history-substring-search-up
-	bindkey "$terminfo[kcud1]" history-substring-search-down
-	bindkey "^[[1;5A" history-substring-search-up
-	bindkey "^[[1;5B" history-substring-search-down
+  zmodload zsh/terminfo
+  bindkey "$terminfo[kcuu1]" history-substring-search-up
+  bindkey "$terminfo[kcud1]" history-substring-search-down
+  bindkey "^[[1;5A" history-substring-search-up
+  bindkey "^[[1;5B" history-substring-search-down
 fi
 
 [ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
@@ -356,64 +337,13 @@ fi
 #ZLE_RPROMPT_INDENT=0
 
 export PATH=/home/birromer/.local/bin:$PATH
-#export PYTHONPATH=/home/birromer/anaconda3/lib/python3.7/site-packages/
-export PATH=$PATH:$HOME/.cargo/bin
-
-alias mtga="/home/birromer/.wine/drive_c/Program\ Files\ \(x86\)/Wizards\ of\ the\ Coast/MTGA/MTGA.exe"
-#alias vibes="LD_PRELOAD=/usr/lib/libfreetype.so /home/birromer/Documents/VIBES/viewer/build/distrib/bin/VIBes-viewer"
-alias sims4="/home/birromer/.wine/drive_c/Games/The\ Sims\ 4\ Seasons/Game/Bin/TS4_x64.exe"
-alias mobilesim="/usr/local/MobileSim/MobileSim"
-
-alias e='emacsclient -c'
-alias ec='emacsclient -c'
-#alias vim='emacsclient -t'
-#alias vi='emacsclient -t'
-#export PATH=$PATH:/home/birromer/.gem/ruby/2.7.0/bin
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/birromer/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/birromer/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/birromer/anaconda3/etc/profile.d/conda.sh"
-    else
-        export NOCONDA_PATH=$PATH
-#        export PATH="/home/birromer/anaconda3/bin:$PATH"
-#        alias pyconda="~/anaconda3/bin/python3"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig/
 
-#android sdk root
-export ANDROID_SDK_ROOT=/opt/android-sdk
-export PATH=$ANDROID_SDK_ROOT:$PATH
-
-#android home
-#export ANDROID_HOME=/opt/android-sdk
-export ANDROID_HOME=/home/birromer/.android
-export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-
-export BROWSER=/usr/bin/firefox-developer-edition
-
-eval "$(starship init zsh)"
 export EDITOR=vim
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
-alias coursdir="cd ~/mega/ensta/Cours"
-
-# added by travis gem
-[ ! -s /home/birromer/.travis/travis.sh ] || source /home/birromer/.travis/travis.sh
-
-#source /opt/ros/melodic/setup.zsh
 source /opt/ros/noetic/setup.zsh
-#source /home/birromer/ros_catkin_ws/devel/setup.zsh
 
 ros-env(){
     source /opt/ros/noetic/setup.bash
@@ -449,10 +379,5 @@ docker rm $(docker ps -aq --filter ancestor=turlucode/ros-noetic:cpu --filter st
 export ROS_MASTER_URI=http://172.17.0.12:11311
 
 export COPPELIASIM_ROOT_DIR="~/Documents/CoppeliaSim"
-
-alias t="tmux"
-alias ta="t a -t"    # attach session
-alias tls="t ls"     # list sessions
-alias tn="t new -t"  # new sessiosn
 
 export DISABLE_AUTO_TITLE='true'
