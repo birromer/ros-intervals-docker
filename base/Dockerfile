@@ -80,8 +80,9 @@ RUN /usr/bin/yes | pip3 install --upgrade virtualenv
 RUN /usr/bin/yes | pip3 install --upgrade paramiko
 RUN /usr/bin/yes | pip3 install --ignore-installed --upgrade numpy protobuf
 RUN /usr/bin/yes | pip3 install --upgrade setuptools
-RUN /usr/bin/yes | pip3 install --upgrade pyibex
-RUN /usr/bin/yes | pip3 install --upgrade tubex-lib
+RUN /usr/bin/yes | pip3 install --no-cache-dir pyibex
+RUN /usr/bin/yes | pip3 install --no-cache-dir tubex-lib
+RUN /usr/bin/yes | pip3 install --no-cache-dir xmlschema
 
 # Install Tubex and Ibex (for interval computations)
 RUN git clone -b develop https://github.com/ibex-team/ibex-lib.git
