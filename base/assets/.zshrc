@@ -381,3 +381,5 @@ export ROS_MASTER_URI=http://172.17.0.12:11311
 export COPPELIASIM_ROOT_DIR="~/Documents/CoppeliaSim"
 
 export DISABLE_AUTO_TITLE='true'
+
+source root/bin/thisroot.sh

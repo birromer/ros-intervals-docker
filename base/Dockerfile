@@ -15,6 +15,7 @@ mlocate \
 lsb-release \
 mesa-utils \
 git \
+gnuplot \
 rxvt-unicode \
 subversion \
 vim \
@@ -83,6 +84,8 @@ RUN /usr/bin/yes | pip3 install --upgrade setuptools
 RUN /usr/bin/yes | pip3 install --no-cache-dir pyibex
 RUN /usr/bin/yes | pip3 install --no-cache-dir tubex-lib
 RUN /usr/bin/yes | pip3 install --no-cache-dir xmlschema
+RUN /usr/bin/yes | pip3 install --no-cache-dir numpy
+RUN /usr/bin/yes | pip3 install --no-cache-dir pyplot
 
 # Install Tubex and Ibex (for interval computations)
 RUN git clone -b develop https://github.com/ibex-team/ibex-lib.git
@@ -112,6 +115,11 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D OPENCV_EXTRA_MODULES_PATH=/opencv_build/opencv_contrib/modules \
     -D BUILD_EXAMPLES=ON .. && \
 make -j8 && make install
+
+# Install ROOT (for graph plotting)
+RUN wget https://root.cern/download/root_v6.22.00.Linux-ubuntu19-x86_64-gcc9.2.tar.gz
+RUN tar -xzvf root_v6.22.00.Linux-ubuntu19-x86_64-gcc9.2.tar.gz
+RUN source root/bin/thisroot.sh # also available: thisroot.{csh,fish,bat}
 
 # Locale
 RUN locale-gen en_US.UTF-8
