@@ -85,7 +85,6 @@ RUN /usr/bin/yes | pip3 install --no-cache-dir pyibex
 RUN /usr/bin/yes | pip3 install --no-cache-dir tubex-lib
 RUN /usr/bin/yes | pip3 install --no-cache-dir xmlschema
 RUN /usr/bin/yes | pip3 install --no-cache-dir numpy
-RUN /usr/bin/yes | pip3 install --no-cache-dir pyplot
 
 # Install Tubex and Ibex (for interval computations)
 RUN git clone -b develop https://github.com/ibex-team/ibex-lib.git
@@ -117,9 +116,8 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 make -j8 && make install
 
 # Install ROOT (for graph plotting)
-RUN wget https://root.cern/download/root_v6.22.00.Linux-ubuntu19-x86_64-gcc9.2.tar.gz
-RUN tar -xzvf root_v6.22.00.Linux-ubuntu19-x86_64-gcc9.2.tar.gz
-RUN source root/bin/thisroot.sh # also available: thisroot.{csh,fish,bat}
+RUN wget https://root.cern/download/root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
+RUN tar -xzvf root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
 # Locale
 RUN locale-gen en_US.UTF-8
@@ -155,10 +153,16 @@ RUN echo "export ROSLAUNCH_SSH_UNKNOWN=1" >> /root/.bashrc
 RUN echo "source /opt/ros/noetic/setup.zsh" >> /root/.zshrc
 RUN echo "export ROSLAUNCH_SSH_UNKNOWN=1" >> /root/.zshrc
 
+# Configure ROOT
+RUN echo "source /root/bin/thisroot.sh" >> /root/.bashrc
+RUN echo "source /root/bin/thisroot.sh" >> /root/.zshrc
+
 # Copy assets
 COPY assets/lambda.zsh-theme /root/.oh-my-zsh/themes/
 COPY assets/.tmux.conf /root/.tmux.conf
 COPY assets/.vimrc /root/.vimrc
+
+
 COPY assets/.Xdefaults /root/.Xdefaults
 COPY assets/fix_eigen.sh /root/fix_eigen.sh
 
