@@ -59,6 +59,17 @@ libtbb-dev \
 libdc1394-22-dev \
 fonts-terminus \
 fonts-inconsolata \
+cmake-gui \
+qt5-default \
+qtpositioning5-dev \
+qml-module-qtquick-controls2 \
+qml-module-qtpositioning \
+qml-module-qtlocation \
+qtcreator \
+sqlite3 \
+libsqlite3-dev \
+libtiff-dev \
+libcurl4-openssl-dev \
 gdb valgrind && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -135,6 +146,22 @@ RUN ln -s /root/.oh-my-zsh/custom/pure/async.zsh /root/.oh-my-zsh/custom/
 RUN sed -i -e 's/robbyrussell/refined/g' /root/.zshrc
 RUN sed -i '/plugins=(/c\plugins=(git git-flow adb pyenv tmux)' /root/.zshrc
 
+# Install Proj
+RUN wget https://download.osgeo.org/proj/proj-8.1.1.tar.gz && \
+    tar xfz proj-8.1.1.tar.gz && \
+    cd proj-8.1.1 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && cmake --build . && \
+    cmake --build . --target install && \
+    projsync --system-directory --all
+
+# Install robot_control
+COPY assets/robot_control /root/robot_control
+RUN cd /root/robot_control && \
+    mkdir -p build && cd build && rm -r * && cmake .. && \
+    make && make install
+
 # Install ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -161,7 +188,6 @@ RUN echo "source /root/bin/thisroot.sh" >> /root/.zshrc
 COPY assets/lambda.zsh-theme /root/.oh-my-zsh/themes/
 COPY assets/.tmux.conf /root/.tmux.conf
 COPY assets/.vimrc /root/.vimrc
-
 
 COPY assets/.Xdefaults /root/.Xdefaults
 COPY assets/fix_eigen.sh /root/fix_eigen.sh
