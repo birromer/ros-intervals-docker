@@ -160,7 +160,7 @@ RUN wget https://download.osgeo.org/proj/proj-8.1.1.tar.gz && \
 COPY assets/robot_control /root/robot_control
 RUN cd /root/robot_control && \
     mkdir -p build && cd build && rm -r * && cmake .. && \
-    make && make install
+    make
 
 # Install ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
