@@ -2,11 +2,15 @@
 
 So, installing ROS is quite tiresome and doing it many times is borderline torture, so with this pain in mind and inspired by [turlucode's repository](https://github.com/turlucode/ros-docker-gui) I ended up making this image with all the software that I use for my research and development.
 
+The image ready for pulling is available
+[here](https://hub.docker.com/r/birromer/ros-noetic-intervals). Might not be
+up to date with the repo.
+
 It includes, among other things:
   - Ubuntu 20.04, as base image
   - ROS Noetic, as it is the core of this thing
   - OpenCV, the latest build for image processing
-  - Ibex and Codac, for constraint programming
+  - Ibex and Codac, for interval analysis/constraint programming
   - A shared folder with the host computer
   - Tmux configuration and layout ready for development, for getting into action in less than 10 seconds
   - and some customization for my own pleasure
@@ -20,7 +24,7 @@ In order to build it you need only to be inside the folder with the Dockerfile a
 docker build -t birromer/ros-noetic:cpu base
 ````
 
-For ease of use, edited a bit of the previously existing functions and added the following to my .zshrc file
+For ease of use, I edited a bit of the previously existing functions and added the following to my .zshrc file
 ````
 ros-start(){
 docker run --rm -it --privileged --net=host --ipc=host --env="DISPLAY" \
