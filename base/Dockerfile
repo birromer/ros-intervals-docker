@@ -156,12 +156,6 @@ RUN wget https://download.osgeo.org/proj/proj-8.1.1.tar.gz && \
     cmake --build . --target install && \
     projsync --system-directory --all
 
-# Install robot_control
-COPY assets/robot_control /root/robot_control
-RUN cd /root/robot_control && \
-    mkdir -p build && cd build && rm -r * && cmake .. && \
-    make
-
 # Install ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -172,6 +166,13 @@ ros-noetic-desktop-full python3-rosdep python3-rosinstall-generator python3-vcst
 ros-noetic-socketcan-bridge \
 ros-noetic-geodesy && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install robot_control
+COPY assets/robot_control /root/robot_control
+RUN cd /root/robot_control && \
+    mkdir -p build && \
+    cmake -S . -B build && \
+    cd build && make
 
 # Configure ROS
 RUN rosdep init && rosdep update
