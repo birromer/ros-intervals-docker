@@ -70,7 +70,8 @@ sqlite3 \
 libsqlite3-dev \
 libtiff-dev \
 libcurl4-openssl-dev \
-gdb valgrind && \
+gdb valgrind \
+libpython2.7 && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install cmake 3.17.3
@@ -137,7 +138,8 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # Install OhMyZSH
-RUN apt update && apt install -y zsh && apt clean #&& rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y zsh
+Run apt clean #&& rm -rf /var/lib/apt/lists/*
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 RUN chsh -s /usr/bin/zsh root
 RUN git clone https://github.com/sindresorhus/pure /root/.oh-my-zsh/custom/pure

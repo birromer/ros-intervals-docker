@@ -3,6 +3,7 @@
 # Functions
 # TOOD: Check if we can use: getent passwd $USER to extract all variables
 # TODO: Check for valid inputs, cause now it will go through even with bad inputs
+
 check_envs () {
     DOCKER_CUSTOM_USER_OK=true;
     if [ -z ${DOCKER_USER_NAME+x} ]; then
@@ -49,14 +50,17 @@ setup_env_user () {
 
     ## add custom commands to zsh
     echo "
-     alias t="tmux"
-     alias ta="t a -t"    # attach session
-     alias tls="t ls"     # list sessions
-     alias tn="t new -t"  # new sessiosn
-     alias la="ls -a"
-     alias ll="ls -l"
-     alias lal="ls -al"
+alias t='tmux'
+alias ta='t a -t'    # attach session
+alias tls='t ls'     # list sessions
+alias tn='t new -t'  # new sessiosn
+alias la='ls -a'
+alias ll='ls -l'
+alias lal='ls -al'
      " >> /root/.zshrc
+
+    echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/" >> /root/.zshrc
+    echo "export ROS_MASTER_URI=http://127.0.0.1:11311" >> /root/.zshrc
 
     ## Copy configs
     cp /root/.profile /home/$USER/
@@ -102,8 +106,6 @@ setup_env_user () {
     echo "    su $DOCKER_USER_NAME" >> /root/.zshrc
     echo "fi" >> /root/.zshrc
 
-
-
     ## Setup Password-file
     PASSWDCONTENTS=$(grep -v "^${USER}:" /etc/passwd)
     GROUPCONTENTS=$(grep -v -e "^${GROUP}:" -e "^docker:" /etc/group)
@@ -131,7 +133,7 @@ else
     DOCKER_USER_NAME="root"
 fi
 
-echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/"
+#echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/"
 
 # Change shell to zsh
 chsh -s /usr/bin/zsh $DOCKER_USER_NAME

@@ -352,33 +352,11 @@ ros-env(){
 }
 ros-env
 
-ros-start(){
-docker run --rm -it --privileged --net=host --ipc=host --env="DISPLAY" \
-    --device=/dev/dri:/dev/dri \
-    -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    -v $HOME/.Xauthority:/home/$(id -un)/.Xauthority -e XAUTHORITY=/home/$(id -un)/.Xauthority \
-    -v /home/$(id -un)/ros:/home/$(id -un)/ros \
-    -e DISPLAY=$DISPLAY \
-    -e DOCKER_USER_NAME=$(id -un) \
-    -e DOCKER_USER_ID=$(id -u) \
-    -e DOCKER_USER_GROUP_NAME=$(id -gn) \
-    -e DOCKER_USER_GROUP_ID=$(id -g) \
-    -e ROS_IP=127.0.0.1 \
-    turlucode/ros-noetic:cpu #-c "cp /ros/.bashrc /root/.bashrc && bash"
-#docker run -it --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" -v /home/$(whoami)/ros:/ros --device /dev/video0 --device /dev/dri osrf/ros:noetic-desktop-full bash -c "cp /ros/.bashrc /root/.bashrc && bash"
-}
-
-ros-connect(){
-docker exec -ti $(docker ps -aq --filter ancestor=turlucode/ros-noetic:cpu --filter status=running) bash
-}
-
-ros-clean(){
-docker rm $(docker ps -aq --filter ancestor=turlucode/ros-noetic:cpu --filter status=exited)
-}
-
 export ROS_MASTER_URI=http://172.17.0.12:11311
 
 export COPPELIASIM_ROOT_DIR="~/Documents/CoppeliaSim"
+
+export PATH=$PATH:~/.local/bin
 
 export DISABLE_AUTO_TITLE='true'
 
