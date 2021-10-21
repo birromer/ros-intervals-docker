@@ -115,7 +115,6 @@ alias lal='ls -al'
     (if test -f /etc/sudoers ; then echo "${USER}  ALL=(ALL)   NOPASSWD: ALL" >> /etc/sudoers ; fi)
 }
 
-
 # ---Main---
 
 # Create new user
@@ -132,8 +131,6 @@ else
     echo -e "\033[0;32mSetting up environment for user=root\033[0m"
     DOCKER_USER_NAME="root"
 fi
-
-#echo "export COPPELIASIM_ROOT_DIR=/home/birromer/ros/CoppeliaSim/"
 
 # Change shell to zsh
 chsh -s /usr/bin/zsh $DOCKER_USER_NAME

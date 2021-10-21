@@ -176,6 +176,36 @@ RUN cd /root/robot_control && \
     cmake -S . -B build && \
     cd build && make
 
+# configuration done with a "robot" user for correct permissions
+ENV user "birromer"
+ENV PATH ${PATH}:/home/${user}/.local/bin
+
+RUN useradd -m -d /home/${user} ${user} && \
+    chown -R ${user} /home/${user} && \
+    adduser ${user} sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER ${user}
+WORKDIR /home/${user}
+
+# Install pip2 for some old stuff
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+RUN python2 get-pip.py
+RUN rm get-pip.py
+
+# Configure python2 environment
+RUN mkdir envs && \
+    cd envs && \
+    virtualenv -p /usr/bin/python2.7 py2 && \
+    cd py2 && \
+    /bin/zsh -c "source bin/activate" && \
+    /home/${user}/.local/bin/pip2 install --user numpy && \
+    /home/${user}/.local/bin/pip2 install --user opencv-contrib-python && \
+    /home/${user}/.local/bin/pip2 install --user Pillow
+
+USER "root"
+WORKDIR "/"
+
 # Configure ROS
 RUN rosdep init && rosdep update
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
