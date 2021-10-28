@@ -177,7 +177,7 @@ RUN cd /root/robot_control && \
     cd build && make
 
 # configuration done with a "robot" user for correct permissions
-ENV user "birromer"
+ENV user "robot"
 ENV PATH ${PATH}:/home/${user}/.local/bin
 
 RUN useradd -m -d /home/${user} ${user} && \
