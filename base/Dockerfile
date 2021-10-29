@@ -169,13 +169,6 @@ ros-noetic-socketcan-bridge \
 ros-noetic-geodesy && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install robot_control
-COPY assets/robot_control /root/robot_control
-RUN cd /root/robot_control && \
-    mkdir -p build && \
-    cmake -S . -B build && \
-    cd build && make
-
 # configuration done with a "robot" user for correct permissions
 ENV user "robot"
 ENV PATH ${PATH}:/home/${user}/.local/bin
