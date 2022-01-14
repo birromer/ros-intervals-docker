@@ -58,6 +58,25 @@ alias lal='ls -al'
     echo "export COPPELIASIM_ROOT_DIR=/home/$USER/ros/CoppeliaSim/" >> /root/.zshrc
     echo "export ROS_MASTER_URI=http://127.0.0.1:11311" >> /root/.zshrc
 
+    echo "
+ros-env(){
+    source /opt/ros/noetic/setup.zsh
+#    source /ros/catkin_ws/devel/setup.zsh
+    export ROS_PACKAGE_PATH=/ros/catkin_ws/:/opt/ros/noetic/share/
+    export ROS_LOCALHOST_ONLY=0
+}
+
+ros2-env(){
+    source /opt/ros/foxy/setup.zsh
+    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/opt/ros/foxy/share/
+    export ROS_DOMAIN_ID=11
+    export ROS_LOCALHOST_ONLY=1
+}
+
+# update this for changing between ROS1 and ROS2
+ros-env
+" >> /root/.zshrc
+
     ## Copy configs
     cp /root/.profile /home/$USER/
     cp /root/.bashrc /home/$USER/

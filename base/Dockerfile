@@ -16,6 +16,7 @@ lsb-release \
 mesa-utils \
 git \
 gnuplot \
+gnupg2 \
 rxvt-unicode \
 subversion \
 vim \
@@ -74,6 +75,23 @@ gdb valgrind \
 libpython2.7 && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Locale
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Install OhMyZSH
+RUN apt update && apt install -y zsh
+Run apt clean #&& rm -rf /var/lib/apt/lists/*
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+RUN chsh -s /usr/bin/zsh root
+RUN git clone https://github.com/sindresorhus/pure /root/.oh-my-zsh/custom/pure
+RUN ln -s /root/.oh-my-zsh/custom/pure/pure.zsh-theme /root/.oh-my-zsh/custom/
+RUN ln -s /root/.oh-my-zsh/custom/pure/async.zsh /root/.oh-my-zsh/custom/
+RUN sed -i -e 's/robbyrussell/refined/g' /root/.zshrc
+RUN sed -i '/plugins=(/c\plugins=(git git-flow adb pyenv tmux)' /root/.zshrc
+
 # Install cmake 3.17.3
 RUN git clone https://github.com/Kitware/CMake.git && \
 cd CMake && git checkout tags/v3.17.3 && ./bootstrap --parallel=8 && make -j8 && make install && \
@@ -103,11 +121,11 @@ RUN git clone -b develop https://github.com/ibex-team/ibex-lib.git
 RUN cd ibex-lib && mkdir build && cd build && \
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 RUN cd ibex-lib/build && \
-make && make install && cd ..
+make -j7 && make install && cd ..
 
 RUN git clone https://github.com/codac-team/codac
 RUN cd codac && git submodule init && git submodule update && \
-mkdir build && cd build && cmake .. && make && make install && cd ..
+mkdir build && cd build && cmake .. && make -j8 && make install && cd ..
 
 # Fix Eigen3 locations for linking
 RUN cd /usr/include && \
@@ -131,23 +149,6 @@ make -j8 && make install
 RUN wget https://root.cern/download/root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 RUN tar -xzvf root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
-# Locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-# Install OhMyZSH
-RUN apt update && apt install -y zsh
-Run apt clean #&& rm -rf /var/lib/apt/lists/*
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-RUN chsh -s /usr/bin/zsh root
-RUN git clone https://github.com/sindresorhus/pure /root/.oh-my-zsh/custom/pure
-RUN ln -s /root/.oh-my-zsh/custom/pure/pure.zsh-theme /root/.oh-my-zsh/custom/
-RUN ln -s /root/.oh-my-zsh/custom/pure/async.zsh /root/.oh-my-zsh/custom/
-RUN sed -i -e 's/robbyrussell/refined/g' /root/.zshrc
-RUN sed -i '/plugins=(/c\plugins=(git git-flow adb pyenv tmux)' /root/.zshrc
-
 # Install Proj
 RUN wget https://download.osgeo.org/proj/proj-8.1.1.tar.gz && \
     tar xfz proj-8.1.1.tar.gz && \
@@ -169,6 +170,24 @@ ros-noetic-socketcan-bridge \
 ros-noetic-geodesy && \
 apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install ROS2
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+# change below the version os ROS if Ubuntu is upgraded
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+RUN apt update && apt install -y ros-foxy-desktop \
+ros-foxy-ros-base \
+python3-colcon-common-extensions \
+ros-foxy-rviz2 \
+ros-foxy-urdf \
+ros-foxy-xacro \
+ros-foxy-robot-state-publisher \
+ros-foxy-rqt* \
+ros-foxy-joint-state-publisher-gui \
+ros-foxy-gazebo-dev \
+ros-foxy-gazebo-plugins \
+ros-foxy-gazebo-ros \
+ros-foxy-rqt-robot-steering
+
 # configuration done with a "robot" user for correct permissions
 ENV user "robot"
 ENV PATH ${PATH}:/home/${user}/.local/bin
@@ -181,20 +200,20 @@ RUN useradd -m -d /home/${user} ${user} && \
 USER ${user}
 WORKDIR /home/${user}
 
-# Install pip2 for some old stuff
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-RUN python2 get-pip.py
-RUN rm get-pip.py
+## Install pip2 for some old stuff
+#RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+#RUN python2 get-pip.py
+#RUN rm get-pip.py
 
-# Configure python2 environment
-RUN mkdir envs && \
-    cd envs && \
-    virtualenv -p /usr/bin/python2.7 py2 && \
-    cd py2 && \
-    /bin/zsh -c "source bin/activate" && \
-    /home/${user}/.local/bin/pip2 install --user numpy && \
-    /home/${user}/.local/bin/pip2 install --user opencv-contrib-python && \
-    /home/${user}/.local/bin/pip2 install --user Pillow
+## Configure python2 environment
+#RUN mkdir envs && \
+#    cd envs && \
+#    virtualenv -p /usr/bin/python2.7 py2 && \
+#    cd py2 && \
+#    /bin/zsh -c "source bin/activate" && \
+#    /home/${user}/.local/bin/pip2 install --user numpy && \
+#    /home/${user}/.local/bin/pip2 install --user opencv-contrib-python && \
+#    /home/${user}/.local/bin/pip2 install --user Pillow
 
 USER "root"
 WORKDIR "/"

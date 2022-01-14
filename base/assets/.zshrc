@@ -343,13 +343,20 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig/
 export EDITOR=vim
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
-source /opt/ros/noetic/setup.zsh
-
 ros-env(){
-    source /opt/ros/noetic/setup.bash
-    source /ros/catkin_ws/devel/setup.bash
+    source /opt/ros/noetic/setup.zsh
+#    source /ros/catkin_ws/devel/setup.zsh
     export ROS_PACKAGE_PATH=/ros/catkin_ws/:/opt/ros/noetic/share/
 }
+
+ros2-env(){
+    source /opt/ros/foxy/setup.zsh
+    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/opt/ros/foxy/share/
+    export ROS_DOMAIN_ID=11
+    export ROS_LOCALHOST_ONLY=1
+}
+
+# update this for changing between ROS1 and ROS2
 ros-env
 
 export ROS_MASTER_URI=http://172.17.0.12:11311
