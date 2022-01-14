@@ -9,16 +9,17 @@ up to date with the repo.
 It includes, among other things:
   - Ubuntu 20.04, as base image
   - ROS Noetic, as it is the core of this thing
+  - *NEW* ROS2 Foxy, as the second beating heart of this thing
   - OpenCV, the latest build for image processing
   - Ibex and Codac, for interval analysis/constraint programming
   - A shared folder with the host computer
   - Tmux configuration and layout ready for development, for getting into action in less than 10 seconds
-  - *New* Support for working with the NAO robot
+  - Support for working with the NAO robot
   - and some customization for my own pleasure
 
 You'll be able to find everything extra in the *assets/* folder, including vim, tmux, zsh and xdefaults for urxvt terminal.
 
-Most of the details can be understood from the original repo, but I must point that it is a simplified version that does not access a dedicated gaphics card nor has out-of-the-box customizability - gotta edit the files as you wish.
+Most of the details can be understood from the original repo, but I must point that it is a simplified version that does not access a dedicated graphics card nor has out-of-the-box customizability - gotta edit the files as you wish.
 
 In order to build it you need only to be inside the folder with the Dockerfile and run
 ````
@@ -60,15 +61,15 @@ docker run --rm -it --privileged --net=host --ipc=host --env="DISPLAY" \
     -e DOCKER_USER_ID=$(id -u) \
     -e DOCKER_USER_GROUP_NAME=$(id -gn) \
     -e DOCKER_USER_GROUP_ID=$(id -g) \
-    birromer/ros-noetic:robot
+    birromer/ros-noetic-intervals:latest
 }
 
 ros-connect(){
-    docker exec -ti $(docker ps -aq --filter ancestor=birromer/ros-noetic:robot --filter status=running) zsh
+    docker exec -ti $(docker ps -aq --filter ancestor=birromer/ros-noetic-intervals:latest --filter status=running) zsh
 }
 
 ros-clean(){
-    docker rm $(docker ps -aq --filter ancestor=birromer/ros-noetic:robot --filter status=exited)
+    docker rm $(docker ps -aq --filter ancestor=birromer/ros-noetic-intervals:latest --filter status=exited)
 }
 ````
 
@@ -80,4 +81,7 @@ In case of doubt the command key has been remapped to C-a and the ? still works 
 I added a robot user for managing packages that broke when installed with root and is accessible with `ros-start`, but you can preserve your user passwords and some configurations with the `ros-start-custom command`.
 
 After running `ros-start`, it is possible to launch a series of terminals on
-tmux with `sudo tmuxp load ros/tmux_ros.yaml`
+tmux with `sudo tmuxp load ros/tmux_ros.yaml`.
+
+As both ROS and ROS2 coexist in the latest version, the commands `ros-env` and
+`ros2-env` may be used to change the environment variables needed for each, they are defined in the loaded .zshrc file.
